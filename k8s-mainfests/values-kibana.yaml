@@ -1,0 +1,16 @@
+elasticsearchHosts: "https://elasticsearch-master:9200"
+elasticsearchCertificateAuthoritiesFile: "ca.crt"
+
+# 針對你的環境開啟對外窗口
+service:
+  type: NodePort
+  nodePort: 30601
+
+# 資源限制
+resources:
+  requests:
+    cpu: "100m"
+    memory: "512Mi"
+  limits:
+    cpu: "500m"
+    memory: "1Gi"

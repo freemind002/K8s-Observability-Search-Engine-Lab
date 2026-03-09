@@ -1,0 +1,22 @@
+# 3個副本
+replicas: 3
+minimumMasterNodes: 2
+
+# 資源限制，防止小 VM 記憶體溢位 (1GB Heap)
+esJavaOpts: "-Xmx1g -Xms1g"
+resources:
+  requests:
+    cpu: "500m"
+    memory: "2Gi"
+  limits:
+    cpu: "1000m"
+    memory: "2Gi"
+
+# 設定資料存放方式
+persistence:
+  enabled: true
+volumeClaimTemplate:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 10Gi
