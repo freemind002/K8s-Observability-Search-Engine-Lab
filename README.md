@@ -59,9 +59,7 @@ helm install elasticsearch elastic/elasticsearch -f values-es.yaml
 ```
 3.安裝 Kibana:
 ```
-helm install kibana elastic/kibana -f values-kibana.yaml
-# 將 Kibana 服務暴露出來
-kubectl patch svc kibana-kibana -p '{"spec": {"type": "NodePort", "ports": [{"port": 5601, "nodePort": 30601}]}}'
+. deploy-kibana.sh
 ```
 
 第四階段：部署 Prometheus + Grafana (Monitoring)
