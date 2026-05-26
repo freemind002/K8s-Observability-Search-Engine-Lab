@@ -17,16 +17,16 @@ kubectl delete secret kibana-kibana-es-token kibana-server-tls --ignore-not-foun
 
 echo ">>> [Step 2/5] 建立安全防線：生成自簽 SSL 憑證 (HTTPS)..."
 openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-  -keyout tls.key -out tls.crt \
-  -subj "/CN=$KIBANA_IP"
+-keyout tls.key -out tls.crt \
+-subj "/CN=$KIBANA_IP"
 kubectl create secret tls kibana-server-tls --cert=tls.crt --key=tls.key
 
 echo ">>> [Step 3/5] 通訊授權：同步 Elasticsearch 後端密碼..."
 ELASTIC_PW=$(kubectl get secrets elasticsearch-master-credentials -ojsonpath='{.data.password}' | base64 -d)
 kubectl exec elasticsearch-master-0 -- curl -k -u "elastic:$ELASTIC_PW" \
-  -X POST "https://localhost:9200/_security/user/kibana_system/_password" \
-  -H "Content-Type: application/json" \
-  -d "{\"password\":\"$KIBANA_SYSTEM_PW\"}"
+-X POST "https://localhost:9200/_security/user/kibana_system/_password" \
+-H "Content-Type: application/json" \
+-d "{\"password\":\"$KIBANA_SYSTEM_PW\"}"
 
 echo ">>> [Step 4/5] 設定生成：建立輕量化 values-kibana-auto.yaml..."
 cat <<EOF > values-kibana-auto.yaml
